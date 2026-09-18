@@ -1,34 +1,78 @@
-# Importing the libraries
-import numpy as np
-import matplotlib.pyplot as plt
+# %% [markdown]
+# # Day 11：K 近邻分类
+#
+# 使用年龄和估计薪资预测是否购买（0/1）。User ID 不作为特征。分层拆分让两部分的类别比例接近；测试集只用于最终评估。precision 表示预测正类中真阳性的比例，recall 表示实际正类被找回的比例，F1 是两者的调和平均，2PR/(P+R)。分类报告分别将每一类视为正类；macro avg 不按类别大小加权，weighted avg 按真实样本数加权。
+#
+# 运行前请阅读[环境与运行说明](../docs/setup.md)。本课 `.py` 是教学源文件，配套 Markdown 和 Notebook 自动同步。图形保存到 `outputs/`，设置 `COURSE_SHOW_PLOTS=1` 可显示窗口。
+
+# %%
+from pathlib import Path
+import sys
+
+# 脚本从文件位置定位仓库；Notebook 从当前工作目录向上查找。
+base = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+for candidate in (base, *base.parents):
+    if (candidate / "Code" / "course_utils.py").is_file():
+        code_dir = str(candidate / "Code")
+        if code_dir not in sys.path:
+            sys.path.insert(0, code_dir)
+        break
+else:
+    raise FileNotFoundError("找不到课程仓库，请从仓库根目录或 Code 目录启动 Notebook。")
+from course_utils import DATA, OUTPUT, finish_plot
+
+
+# %% [markdown]
+# ## 数据与基线
+#
+# 先与始终预测训练集多数类的简单基线比较。所有类别指标必须结合样本数量解读。
+
+# %%
 import pandas as pd
-
-# Importing the dataset
-dataset = pd.read_csv('../datasets/Social_Network_Ads.csv')
-X = dataset.iloc[:, [2, 3]].values
-y = dataset.iloc[:, 4].values
-
-# Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
-
-# Feature Scaling
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
+from sklearn.dummy import DummyClassifier
+from sklearn.metrics import accuracy_score
+from course_utils import classification_summary, decision_plot
 
-# Fitting K-NN to the Training set
+data = pd.read_csv(DATA / "Social_Network_Ads.csv")
+X = data[["Age", "EstimatedSalary"]]
+y = data["Purchased"]
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, stratify=y, random_state=0)
+baseline = DummyClassifier(strategy="most_frequent").fit(X_train, y_train)
+print("Majority baseline accuracy:", accuracy_score(y_test, baseline.predict(X_test)))
+
+# %% [markdown]
+# ## 训练模型
+#
+# K 太小容易受噪声影响，太大可能欠拟合；尺度直接影响距离。用训练集内的 5 折交叉验证比较 K 与权重。Pipeline 保证每折的标准化不接触验证折。scoring="f1" 以 Purchased=1 为正类；GridSearchCV 完成搜索后会用最佳参数在全部训练数据上重新拟合。
+
+# %%
 from sklearn.neighbors import KNeighborsClassifier
-classifier = KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2)
-classifier.fit(X_train, y_train)
+from sklearn.model_selection import GridSearchCV
+pipeline = Pipeline([("scale", StandardScaler()), ("classifier", KNeighborsClassifier())])
+search = GridSearchCV(pipeline, {"classifier__n_neighbors": [3, 5, 9, 15],
+                               "classifier__weights": ["uniform", "distance"]}, cv=5, scoring="f1")
+search.fit(X_train, y_train)
+model = search.best_estimator_
+print("Best training-CV parameters:", search.best_params_)
 
-# Predicting the Test set results
-y_pred = classifier.predict(X_test)
+# %% [markdown]
+# ## 测试评估与决策边界
+#
+# 混淆矩阵行是真实类别，列是预测类别。绘图工具在原始单位网格上调用整个模型，年龄/薪资坐标未标准化；它仅支持本课两个输入特征。
 
-# Making the Confusion Matrix
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
-cm = confusion_matrix(y_test, y_pred)
-print(cm)
-print(classification_report(y_test, y_pred))
+# %%
+y_pred = classification_summary(model, X_test, y_test, "day11")
+decision_plot(model, X_test, y_test, "day11_test", ["Age (years)", "Estimated salary"])
+from sklearn.metrics import RocCurveDisplay
+# 单个混淆矩阵只能给出一个阈值工作点；ROC 需要用概率分数扫描多个阈值。
+RocCurveDisplay.from_estimator(model, X_test, y_test)
+finish_plot("day11_roc")
+
+# %% [markdown]
+# ## 练习与检查
+#
+# 解释为什么单个混淆矩阵不能得到完整 ROC；比较概率分数扫阈值的结果。KNN 的“非参数”并不表示没有 K 等超参数。

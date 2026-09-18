@@ -1,0 +1,106 @@
+# %% [markdown]
+# # Day 18：用 NumPy 实现两层神经网络
+#
+# 目标：从前向传播、交叉熵到反向传播完成一个可检查的网络。前置：矩阵乘法、链式法则。输入 `(n,2)`，隐藏层 `(n,8)`，输出 logits `(n,1)`；使用 tanh 隐藏激活和二分类交叉熵。
+#
+# 运行前请阅读[环境与运行说明](../docs/setup.md)。本课 `.py` 是教学源文件，配套 Markdown 和 Notebook 自动同步。图形保存到 `outputs/`，设置 `COURSE_SHOW_PLOTS=1` 可显示窗口。
+
+# %%
+from pathlib import Path
+import sys
+
+# 脚本从文件位置定位仓库；Notebook 从当前工作目录向上查找。
+base = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+for candidate in (base, *base.parents):
+    if (candidate / "Code" / "course_utils.py").is_file():
+        code_dir = str(candidate / "Code")
+        if code_dir not in sys.path:
+            sys.path.insert(0, code_dir)
+        break
+else:
+    raise FileNotFoundError("找不到课程仓库，请从仓库根目录或 Code 目录启动 Notebook。")
+from course_utils import DATA, OUTPUT, finish_plot
+
+
+# %% [markdown]
+# ## 数据和参数
+#
+# 用独立随机数生成器初始化小权重；均为零会导致隐藏单元对称，学不到不同特征。测试集不参与更新。
+
+# %%
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_moons
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+X, y = make_moons(n_samples=300, noise=0.15, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=0)
+y_train = y_train[:, None]
+rng = np.random.default_rng(0)
+params = {"W1": rng.normal(0, 0.3, (2, 8)), "b1": np.zeros((1, 8)),
+          "W2": rng.normal(0, 0.3, (8, 1)), "b2": np.zeros((1, 1))}
+
+# %% [markdown]
+# ## 前向传播与梯度
+#
+# 用 `logaddexp(0,z)-y*z` 稳定计算交叉熵；sigmoid 用 `exp(-logaddexp(0,-z))` 避免溢出。梯度按 batch 样本数取平均，矩阵形状可以逐步核对。
+
+# %%
+def loss_and_gradients(X, y, p):
+    """X: (n,2), y: (n,1)；返回平均交叉熵和与参数同形状的梯度。"""
+    if y.shape != (len(X), 1):
+        raise ValueError("y 必须是 (n,1)，防止与 logits 广播成 (n,n)")
+    hidden = np.tanh(X @ p["W1"] + p["b1"])
+    logits = hidden @ p["W2"] + p["b2"]
+    loss = np.mean(np.logaddexp(0, logits) - y * logits)
+    probabilities = np.exp(-np.logaddexp(0, -logits))
+    dz = (probabilities - y) / len(X)
+    # tanh 的导数为 1-h²；W2.T 将输出梯度传播回 8 个隐藏单元。
+    dh = (dz @ p["W2"].T) * (1 - hidden ** 2)
+    grads = {"W2": hidden.T @ dz, "b2": dz.sum(axis=0, keepdims=True),
+             "W1": X.T @ dh, "b1": dh.sum(axis=0, keepdims=True)}
+    return float(loss), grads
+
+# 训练前用中心差分逐参数核对梯度；每次扰动后恢复原值。
+_, analytic = loss_and_gradients(X_train[:8], y_train[:8], params)
+errors = []
+epsilon = 1e-5
+for name, value in params.items():
+    for index in np.ndindex(value.shape):
+        original = value[index]
+        value[index] = original + epsilon
+        plus, _ = loss_and_gradients(X_train[:8], y_train[:8], params)
+        value[index] = original - epsilon
+        minus, _ = loss_and_gradients(X_train[:8], y_train[:8], params)
+        value[index] = original
+        errors.append(abs((plus - minus) / (2 * epsilon) - analytic[name][index]))
+print("Maximum gradient check error:", max(errors))
+assert max(errors) < 1e-6
+
+# %% [markdown]
+# ## 梯度下降与最终评估
+#
+# 反向传播计算梯度，梯度下降负责更新参数，两者不是同一个步骤。完整 batch 便于理解；epoch=遍历全部训练数据一次。
+
+# %%
+losses = []
+for epoch in range(2000):
+    loss, gradients = loss_and_gradients(X_train, y_train, params)
+    losses.append(loss)
+    for name in params:
+        params[name] -= 0.1 * gradients[name]
+final_loss, _ = loss_and_gradients(X_train, y_train, params)
+losses.append(final_loss)  # 最后一次参数更新之后的损失
+hidden_test = np.tanh(X_test @ params["W1"] + params["b1"])
+y_pred = (hidden_test @ params["W2"] + params["b2"] >= 0).ravel().astype(int)
+print("Initial/final training loss:", losses[0], losses[-1])
+print("Test accuracy:", accuracy_score(y_test, y_pred))
+fig, ax = plt.subplots()
+ax.plot(losses)
+ax.set(xlabel="Epoch", ylabel="Training cross-entropy")
+finish_plot("day18_loss")
+
+# %% [markdown]
+# ## 练习与检查
+#
+# 改变一个梯度公式，确认梯度检查能发现错误，然后恢复。比较学习率过大和过小时的训练曲线；若要选超参数，从训练集再划出验证集。

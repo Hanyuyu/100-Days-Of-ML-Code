@@ -1,76 +1,74 @@
-#Day 1: Data Prepocessing
+# %% [markdown]
+# # Day 1：数据预处理
+#
+# 目标：区分数值特征与类别特征，理解 `fit` 如何学习参数、`transform` 如何应用参数，并避免测试数据泄漏。前置知识：DataFrame 选列、数组形状。数据只有 10 行，用来观察预处理，不适合据此评价模型泛化能力。
+#
+# 运行前请阅读[环境与运行说明](../docs/setup.md)。本课 `.py` 是教学源文件，配套 Markdown 和 Notebook 自动同步。图形保存到 `outputs/`，设置 `COURSE_SHOW_PLOTS=1` 可显示窗口。
 
-#Step 1: Importing the libraries
+# %%
+from pathlib import Path
+import sys
+
+# 脚本从文件位置定位仓库；Notebook 从当前工作目录向上查找。
+base = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+for candidate in (base, *base.parents):
+    if (candidate / "Code" / "course_utils.py").is_file():
+        code_dir = str(candidate / "Code")
+        if code_dir not in sys.path:
+            sys.path.insert(0, code_dir)
+        break
+else:
+    raise FileNotFoundError("找不到课程仓库，请从仓库根目录或 Code 目录启动 Notebook。")
+from course_utils import DATA, OUTPUT, finish_plot
+
+
+# %% [markdown]
+# ## 读取和切分原始数据
+#
+# Country 是无序类别；Age 和 Salary 是数值；Purchased 是目标。先切分，后学习填补均值、缩放参数和类别集合。80:20 是示例选择，不是所有任务的固定规则。
+
+# %%
 import numpy as np
 import pandas as pd
-
-#Step 2: Importing dataset
-dataset = pd.read_csv('../datasets/Data.csv')
-X = dataset.iloc[ : , :-1].values
-Y = dataset.iloc[ : , 3].values
-print("Step 2: Importing dataset")
-print("X")
-print(X)
-print("Y")
-print(Y)
-
-#Step 3: Handling the missing data
-# If you use the newest version of sklearn, use the lines of code commented out
-from sklearn.impute import SimpleImputer
-imputer = SimpleImputer(missing_values=np.nan, strategy="mean")
-#from sklearn.preprocessing import Imputer
-# axis=0表示按列进行
-#imputer = Imputer(missing_values = "NaN", strategy = "mean", axis = 0)
-imputer = imputer.fit(X[ : , 1:3])
-X[ : , 1:3] = imputer.transform(X[ : , 1:3])
-print("---------------------")
-print("Step 3: Handling the missing data")
-print("step2")
-print("X")
-print(X)
-
-#Step 4: Encoding categorical data
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-from sklearn.compose import ColumnTransformer 
-#labelencoder_X = LabelEncoder()
-#X[ : , 0] = labelencoder_X.fit_transform(X[ : , 0])
-#Creating a dummy variable
-#print(X)
-ct = ColumnTransformer([("", OneHotEncoder(), [0])], remainder = 'passthrough')
-X = ct.fit_transform(X)
-#onehotencoder = OneHotEncoder(categorical_features = [0])
-#X = onehotencoder.fit_transform(X).toarray()
-labelencoder_Y = LabelEncoder()
-Y =  labelencoder_Y.fit_transform(Y)
-print("---------------------")
-print("Step 4: Encoding categorical data")
-print("X")
-print(X)
-print("Y")
-print(Y)
-
-#Step 5: Splitting the datasets into training sets and Test sets
 from sklearn.model_selection import train_test_split
-X_train, X_test, Y_train, Y_test = train_test_split( X , Y , test_size = 0.2, random_state = 0)
-print("---------------------")
-print("Step 5: Splitting the datasets into training sets and Test sets")
-print("X_train")
-print(X_train)
-print("X_test")
-print(X_test)
-print("Y_train")
-print(Y_train)
-print("Y_test")
-print(Y_test)
 
-#Step 6: Feature Scaling
-from sklearn.preprocessing import StandardScaler
-sc_X = StandardScaler()
-X_train = sc_X.fit_transform(X_train)
-X_test = sc_X.transform(X_test)
-print("---------------------")
-print("Step 6: Feature Scaling")
-print("X_train")
-print(X_train)
-print("X_test")
-print(X_test)
+data = pd.read_csv(DATA / "Data.csv")
+X = data[["Country", "Age", "Salary"]]
+y = data["Purchased"].map({"No": 0, "Yes": 1})
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+print("Missing values:", X_train.isna().sum().to_dict())
+print("Train/test:", X_train.shape, X_test.shape)
+
+# %% [markdown]
+# ## 组合数值和类别预处理
+#
+# `SimpleImputer` 只在训练集计算均值。非恒定数值列标准化为训练集均值约 0、方差约 1（使用总体方差）；恒定列保持为 0；类别独热编码不人为引入大小关系。`handle_unknown="ignore"` 将新类别编码为全零；模型无法因此学到新类别的效果。树模型通常不需要标准化。
+
+# %%
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+numeric = Pipeline([("impute", SimpleImputer(strategy="mean")),
+                    ("scale", StandardScaler())])
+preprocessor = ColumnTransformer([
+    ("numeric", numeric, ["Age", "Salary"]),
+    ("country", OneHotEncoder(handle_unknown="ignore", sparse_output=False), ["Country"]),
+])
+X_train_ready = preprocessor.fit_transform(X_train)
+X_test_ready = preprocessor.transform(X_test)
+print(preprocessor.get_feature_names_out())
+print("Train transformed:", X_train_ready)
+print("Test transformed:", X_test_ready)
+print("Training means:", preprocessor.named_transformers_["numeric"].named_steps["impute"].statistics_)
+assert np.isfinite(X_train_ready).all() and np.isfinite(X_test_ready).all()
+
+# %% [markdown]
+# ## 练习与检查
+#
+# 本数据通常得到 8 条训练、2 条测试记录；输出列数是 2 个数值列加训练集中的国家类别数。列名与数值的顺序应一致。
+#
+# 1. 手工计算训练集 Age 的非缺失均值，与填补器参数比较。
+# 2. 将测试样本国家改为新类别，观察编码；不要重新 `fit`。
+# 3. 说明为什么不能在整个数据集上先填补、再拆分。预期：转换后没有 NaN，训练和测试的特征列一致。

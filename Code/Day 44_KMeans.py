@@ -1,0 +1,65 @@
+# %% [markdown]
+# # Day 44：K-means 聚类实现
+#
+# 目标：在无标签输入上拟合聚类，理解惯性和轮廓系数。簇编号没有语义顺序，不能直接与真实类别数字逐项比较。K-means 偏好近似球状、尺度相似的簇。
+#
+# 运行前请阅读[环境与运行说明](../docs/setup.md)。本课 `.py` 是教学源文件，配套 Markdown 和 Notebook 自动同步。图形保存到 `outputs/`，设置 `COURSE_SHOW_PLOTS=1` 可显示窗口。
+
+# %%
+from pathlib import Path
+import sys
+
+# 脚本从文件位置定位仓库；Notebook 从当前工作目录向上查找。
+base = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+for candidate in (base, *base.parents):
+    if (candidate / "Code" / "course_utils.py").is_file():
+        code_dir = str(candidate / "Code")
+        if code_dir not in sys.path:
+            sys.path.insert(0, code_dir)
+        break
+else:
+    raise FileNotFoundError("找不到课程仓库，请从仓库根目录或 Code 目录启动 Notebook。")
+from course_utils import DATA, OUTPUT, finish_plot
+
+
+# %% [markdown]
+# ## 初始化、拟合与指标
+#
+# `k-means++` 改善初始中心选择；显式 `n_init=10` 多次初始化取较好结果。惯性随 K 增加通常下降，不能只取最小值；轮廓系数比较簇内紧密性与簇间分离性，也依赖数据几何。单样本轮廓系数 s=(b−a)/max(a,b)，a 是同簇平均距离、b 是最近其他簇的平均距离；整体取样本平均，范围 [−1,1]。K=3 的展示利用的是合成数据已知结构，不把这个选择描述为未知数据上的自动最优结论。
+
+# %%
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs, make_moons
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import silhouette_score
+X, _ = make_blobs(n_samples=240, centers=3, cluster_std=0.8, random_state=0)
+scaled = StandardScaler().fit_transform(X)
+for k in [2, 3, 4, 5]:
+    model = KMeans(n_clusters=k, init="k-means++", n_init=10, random_state=0)
+    labels = model.fit_predict(scaled)
+    print("K:", k, "inertia:", model.inertia_, "silhouette:", silhouette_score(scaled, labels))
+model = KMeans(n_clusters=3, n_init=10, random_state=0).fit(scaled)
+fig, ax = plt.subplots()
+ax.scatter(scaled[:, 0], scaled[:, 1], c=model.labels_, cmap="viridis")
+ax.scatter(*model.cluster_centers_.T, marker="x", color="red", s=100)
+ax.set(xlabel="Scaled feature 1", ylabel="Scaled feature 2", title="K-means")
+finish_plot("day44_clusters")
+
+# %% [markdown]
+# ## 非球状簇反例
+#
+# 月牙形数据提醒我们：优化目标正确完成，不意味着簇符合人的预期。这里研究同一个数据集的结构，不把聚类内部指标当作监督学习测试准确率。
+
+# %%
+moons, _ = make_moons(n_samples=240, noise=0.05, random_state=0)
+labels = KMeans(n_clusters=2, n_init=10, random_state=0).fit_predict(moons)
+fig, ax = plt.subplots()
+ax.scatter(moons[:, 0], moons[:, 1], c=labels, cmap="viridis")
+ax.set(title="K-means on non-spherical clusters", xlabel="Feature 1", ylabel="Feature 2")
+finish_plot("day44_counterexample")
+
+# %% [markdown]
+# ## 练习与检查
+#
+# 重复初始化比较惯性。把一个输入维度放大 100 倍，比较缩放前后结果。说明为何轮廓系数也不能保证簇具有业务意义。

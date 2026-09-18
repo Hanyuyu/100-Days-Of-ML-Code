@@ -1,4 +1,6 @@
 ## 翻译规范`v20180809`
+
+原有规范保留供历史翻译参考；课程代码、数据路径与同步流程以文末“现代课程维护补充”和[运行说明](docs/setup.md)为准。
 ### 交付物
 >- 图片（.jpg），质量选择最高，源文件自己保留好，文件命名`Day xxx.jpg`
 >- 代码，含md、py、notebook等，要求调试通过，数据引用datasets文件夹`../datasets/xxxx.csv`，文件命名`Day xxx_xxxx_xxxx.md`
@@ -26,3 +28,12 @@
 |---|---|
 |dependent variable|因变量|
 |independent variable|自变量|
+
+## 现代课程维护补充
+
+- 实现课以带 `# %%` 单元标记的 Python 文件为源，运行 `python tools/sync_lessons.py` 同步 Markdown 和 Notebook。
+- 讲解应包含目标、先修知识、字段/形状、参数选择理由、结果解释和练习；注释重点解释原因。
+- 数据路径通过仓库定位；共享工具负责路径/绘图，模型关键步骤保留在课内。
+- 模型选择仅使用训练/验证集；测试集只作最终评估。变更后重跑，不保留过期 Notebook 输出。
+- 理论日不强制创建空 Python/Notebook；应有可独立阅读的 Markdown。
+- 图片不是本轮更新范围；重要定义与步骤必须有文字说明。

@@ -1,68 +1,78 @@
-# Importing the libraries
-import numpy as np
-import matplotlib.pyplot as plt
+# %% [markdown]
+# # Day 25：决策树分类
+#
+# 使用年龄和估计薪资预测是否购买（0/1）。User ID 不作为特征。分层拆分让两部分的类别比例接近；测试集只用于最终评估。precision 表示预测正类中真阳性的比例，recall 表示实际正类被找回的比例，F1 是两者的调和平均，2PR/(P+R)。分类报告分别将每一类视为正类；macro avg 不按类别大小加权，weighted avg 按真实样本数加权。
+#
+# 运行前请阅读[环境与运行说明](../docs/setup.md)。本课 `.py` 是教学源文件，配套 Markdown 和 Notebook 自动同步。图形保存到 `outputs/`，设置 `COURSE_SHOW_PLOTS=1` 可显示窗口。
+
+# %%
+from pathlib import Path
+import sys
+
+# 脚本从文件位置定位仓库；Notebook 从当前工作目录向上查找。
+base = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+for candidate in (base, *base.parents):
+    if (candidate / "Code" / "course_utils.py").is_file():
+        code_dir = str(candidate / "Code")
+        if code_dir not in sys.path:
+            sys.path.insert(0, code_dir)
+        break
+else:
+    raise FileNotFoundError("找不到课程仓库，请从仓库根目录或 Code 目录启动 Notebook。")
+from course_utils import DATA, OUTPUT, finish_plot
+
+
+# %% [markdown]
+# ## 数据与基线
+#
+# 先与始终预测训练集多数类的简单基线比较。所有类别指标必须结合样本数量解读。
+
+# %%
 import pandas as pd
-
-# Importing the dataset
-dataset = pd.read_csv('../datasets/Social_Network_Ads.csv')
-X = dataset.iloc[:, [2, 3]].values
-y = dataset.iloc[:, 4].values
-
-# Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+from sklearn.dummy import DummyClassifier
+from sklearn.metrics import accuracy_score
+from course_utils import classification_summary, decision_plot
 
-# Feature Scaling
-from sklearn.preprocessing import StandardScaler
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
+data = pd.read_csv(DATA / "Social_Network_Ads.csv")
+X = data[["Age", "EstimatedSalary"]]
+y = data["Purchased"]
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, stratify=y, random_state=0)
+baseline = DummyClassifier(strategy="most_frequent").fit(X_train, y_train)
+print("Majority baseline accuracy:", accuracy_score(y_test, baseline.predict(X_test)))
 
-# Fitting Decision Tree Classification to the Training set
+# %% [markdown]
+# ## 训练模型
+#
+# sklearn 使用 CART 风格二叉树，即使 criterion="entropy" 也不是 ID3。树按阈值分裂，通常不需要标准化；用训练内交叉验证限制深度与叶节点样本数，控制过拟合。
+
+# %%
 from sklearn.tree import DecisionTreeClassifier
-classifier = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)
-classifier.fit(X_train, y_train)
+from sklearn.model_selection import GridSearchCV
+search = GridSearchCV(DecisionTreeClassifier(criterion="entropy", random_state=0),
+                      {"max_depth": [2, 3, 5, None], "min_samples_leaf": [1, 5, 10]}, cv=5, scoring="f1")
+search.fit(X_train, y_train)
+model = search.best_estimator_
+print("Best training-CV parameters:", search.best_params_)
 
-# Predicting the Test set results
-y_pred = classifier.predict(X_test)
+# %% [markdown]
+# ## 测试评估与决策边界
+#
+# 混淆矩阵行是真实类别，列是预测类别。绘图工具在原始单位网格上调用整个模型，年龄/薪资坐标未标准化；它仅支持本课两个输入特征。
 
-# Making the Confusion Matrix
-from sklearn.metrics import confusion_matrix
-cm = confusion_matrix(y_test, y_pred)
+# %%
+y_pred = classification_summary(model, X_test, y_test, "day25")
+decision_plot(model, X_test, y_test, "day25_test", ["Age (years)", "Estimated salary"])
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
+fig, ax = plt.subplots(figsize=(12, 6))
+plot_tree(model, feature_names=list(X.columns), class_names=["No", "Yes"],
+          filled=True, max_depth=3, ax=ax)
+finish_plot("day25_tree")
+print("Training accuracy:", model.score(X_train, y_train))
 
-# Visualising the Training set results
-from matplotlib.colors import ListedColormap
-X_set, y_set = X_train, y_train
-X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.01),
-                     np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.01))
-plt.contourf(X1, X2, classifier.predict(np.array([X1.ravel(), X2.ravel()]).T).reshape(X1.shape),
-             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
-plt.xlim(X1.min(), X1.max())
-plt.ylim(X2.min(), X2.max())
-for i, j in enumerate(np.unique(y_set)):
-    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
-                c = ListedColormap(('red', 'green'))(i), label = j)
-plt.title('Decision Tree Classification (Training set)')
-plt.xlabel('Age')
-plt.ylabel('Estimated Salary')
-plt.legend()
-plt.show()
-
-# Visualising the Test set results
-from matplotlib.colors import ListedColormap
-X_set, y_set = X_test, y_test
-X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 1, stop = X_set[:, 0].max() + 1, step = 0.01),
-                     np.arange(start = X_set[:, 1].min() - 1, stop = X_set[:, 1].max() + 1, step = 0.01))
-plt.contourf(X1, X2, classifier.predict(np.array([X1.ravel(), X2.ravel()]).T).reshape(X1.shape),
-             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
-plt.xlim(X1.min(), X1.max())
-plt.ylim(X2.min(), X2.max())
-for i, j in enumerate(np.unique(y_set)):
-    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
-                c = ListedColormap(('red', 'green'))(i), label = j)
-plt.title('Decision Tree Classification (Test set)')
-plt.xlabel('Age')
-plt.ylabel('Estimated Salary')
-plt.legend()
-plt.show()
-
+# %% [markdown]
+# ## 练习与检查
+#
+# 比较不限制深度和限制深度的训练/验证表现，解释为何训练准确率更高不一定更好。图中显示深度 0～3（根节点深度为 0），更深节点会折叠。

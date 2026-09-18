@@ -1,0 +1,91 @@
+# %% [markdown]
+# # Day 41：小型卷积神经网络
+#
+# 目标：理解卷积、池化、全局平均池化与二分类输出；前置为 Day 40 生成的数据清单。使用小型网络便于 CPU 学习，实际准确率需用真实数据完整验证。
+#
+# 运行前请阅读[环境与运行说明](../docs/setup.md)。本课 `.py` 是教学源文件，配套 Markdown 和 Notebook 自动同步。图形保存到 `outputs/`，设置 `COURSE_SHOW_PLOTS=1` 可显示窗口。
+
+# %%
+from pathlib import Path
+import sys
+
+# 脚本从文件位置定位仓库；Notebook 从当前工作目录向上查找。
+base = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+for candidate in (base, *base.parents):
+    if (candidate / "Code" / "course_utils.py").is_file():
+        code_dir = str(candidate / "Code")
+        if code_dir not in sys.path:
+            sys.path.insert(0, code_dir)
+        break
+else:
+    raise FileNotFoundError("找不到课程仓库，请从仓库根目录或 Code 目录启动 Notebook。")
+from course_utils import DATA, OUTPUT, finish_plot
+
+
+# %% [markdown]
+# ## 复用数据划分
+#
+# 训练数据先完整打乱索引再解码，验证和测试数据不打乱。读取清单时先校验所选文件哈希，发现文件变化或划分重复就停止。所有图像按相同规则双线性缩放。数据按 batch 加载，避免全量 float64 图像数组。
+
+# %%
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+from deep_utils import configure, load_manifest, pet_dataset
+configure()
+manifest = load_manifest()
+train = pet_dataset(manifest, "train", training=True)
+valid = pet_dataset(manifest, "validation")
+test = pet_dataset(manifest, "test")
+
+# %% [markdown]
+# ## 构建和训练
+#
+# 卷积学习局部特征；池化降低空间分辨率；GlobalAveragePooling2D 避免 Flatten 后产生大量参数。隐藏 Dense 使用 ReLU，最终 sigmoid 输出 Cat 概率；binary crossentropy 与 0/1 浮点标签匹配。Conv2D 默认 valid 填充，空间形状依次为 64×64×3 → 62×62×16 → 31×31×16 → 29×29×32 → 32 → 16 → 1。下面完整列出结构，可以直接与 model.summary 的参数量对照。
+
+# %%
+model = tf.keras.Sequential([
+    tf.keras.Input(shape=(64, 64, 3)),
+    tf.keras.layers.Conv2D(16, 3, activation="relu"),
+    tf.keras.layers.MaxPooling2D(),
+    tf.keras.layers.Conv2D(32, 3, activation="relu"),
+    tf.keras.layers.GlobalAveragePooling2D(),
+    tf.keras.layers.Dense(16, activation="relu"),
+    tf.keras.layers.Dense(1, activation="sigmoid"),
+])
+model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+model.summary()
+epochs = 1 if os.environ.get("COURSE_SMOKE") == "1" else 5
+history = model.fit(train, validation_data=valid, epochs=epochs, verbose=2,
+                    callbacks=[tf.keras.callbacks.EarlyStopping(patience=2, restore_best_weights=True)])
+print("Held-out test:", model.evaluate(test, verbose=0, return_dict=True))
+fig, ax = plt.subplots()
+ax.plot(history.history["loss"], label="train")
+ax.plot(history.history["val_loss"], label="validation")
+ax.set(xlabel="Epoch", ylabel="Binary cross-entropy")
+ax.legend()
+finish_plot("day41_loss")
+
+# %% [markdown]
+# ## 保存和复核
+#
+# 除了总准确率，还要检查类别错误。早停依据验证损失，不能依据测试集选择 epoch；模型保存后用同一批图确认加载结果一致。
+
+# %%
+from sklearn.metrics import classification_report
+actual, predicted = [], []
+for images, labels in test:
+    actual.extend(labels.numpy().astype(int))
+    predicted.extend((model(images, training=False).numpy().ravel() >= 0.5).astype(int))
+print(classification_report(actual, predicted, target_names=["Dog", "Cat"], zero_division=0))
+model_path = OUTPUT / "day41_cnn.keras"
+model.save(model_path)
+restored = tf.keras.models.load_model(model_path)
+images, _ = next(iter(test))
+np.testing.assert_allclose(model(images, training=False).numpy(), restored(images, training=False).numpy(), rtol=1e-5, atol=1e-6)
+
+# %% [markdown]
+# ## 练习与检查
+#
+# 从 model.summary 计算参数量。比较训练和验证曲线：如果训练损失持续下降而验证损失上升，先分析过拟合与数据量，不直接增加层数。

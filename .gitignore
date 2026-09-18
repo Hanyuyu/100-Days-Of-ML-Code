@@ -104,3 +104,8 @@ venv.bak/
 .mypy_cache/
 /.idea
 /datasets/*.bak
+
+# Generated course models, figures, manifests and logs
+/outputs/
+/datasets/PetImages/
+/datasets/*.pickle

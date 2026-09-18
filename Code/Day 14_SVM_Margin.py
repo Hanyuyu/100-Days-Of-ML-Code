@@ -1,0 +1,61 @@
+# %% [markdown]
+# # Day 14：观察 SVM 间隔与 C
+#
+# 目标：把 Day 12/13 的 C 与间隔联系起来。本课是独立的训练/验证实验，不复用测试集调参。先修：Day 13。
+#
+# 运行前请阅读[环境与运行说明](../docs/setup.md)。本课 `.py` 是教学源文件，配套 Markdown 和 Notebook 自动同步。图形保存到 `outputs/`，设置 `COURSE_SHOW_PLOTS=1` 可显示窗口。
+
+# %%
+from pathlib import Path
+import sys
+
+# 脚本从文件位置定位仓库；Notebook 从当前工作目录向上查找。
+base = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+for candidate in (base, *base.parents):
+    if (candidate / "Code" / "course_utils.py").is_file():
+        code_dir = str(candidate / "Code")
+        if code_dir not in sys.path:
+            sys.path.insert(0, code_dir)
+        break
+else:
+    raise FileNotFoundError("找不到课程仓库，请从仓库根目录或 Code 目录启动 Notebook。")
+from course_utils import DATA, OUTPUT, finish_plot
+
+
+# %% [markdown]
+# ## 构造可重复的二维问题
+#
+# 特征本来就在相近尺度，本课直接建模，避免支持向量坐标与绘图单位混淆。验证集用于比较超参数，不作为最终无偏测试成绩。
+
+# %%
+from sklearn.datasets import make_blobs
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+import numpy as np
+import matplotlib.pyplot as plt
+X, y = make_blobs(n_samples=180, centers=2, cluster_std=2.0, random_state=8)
+X_train, X_valid, y_train, y_valid = train_test_split(X, y, stratify=y, random_state=0)
+for C in [0.1, 1.0, 10.0]:
+    model = SVC(kernel="linear", C=C).fit(X_train, y_train)
+    print("C:", C, "validation accuracy:", model.score(X_valid, y_valid), "support:", model.n_support_)
+    width = 2 / np.linalg.norm(model.coef_)
+    print("Margin width:", width)
+    # score=0 是分类边界，score=±1 是软间隔边界；违例点可在间隔内甚至另一侧。
+    x1, x2 = np.meshgrid(np.linspace(X[:, 0].min()-1, X[:, 0].max()+1, 120),
+                         np.linspace(X[:, 1].min()-1, X[:, 1].max()+1, 120))
+    scores = model.decision_function(np.column_stack([x1.ravel(), x2.ravel()])).reshape(x1.shape)
+    fig, ax = plt.subplots()
+    ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap="coolwarm", vmin=0, vmax=1, s=16)
+    contours = ax.contour(x1, x2, scores, levels=[-1, 0, 1], colors="black",
+                          linestyles=["--", "-", "--"])
+    ax.clabel(contours)
+    ax.scatter(*model.support_vectors_.T, facecolors="none", edgecolors="black", s=80,
+               label="Support vectors")
+    ax.set(xlabel="Feature 1", ylabel="Feature 2", title=f"C={C}, margin={width:.3f}")
+    ax.legend()
+    finish_plot(f"day14_C_{C}")
+
+# %% [markdown]
+# ## 练习与检查
+#
+# 计算 `2 / ||coef_||` 得到两条间隔边界间的宽度。C 变化时宽度是否单调变化？记录观察，不把有限样本现象当定理。
