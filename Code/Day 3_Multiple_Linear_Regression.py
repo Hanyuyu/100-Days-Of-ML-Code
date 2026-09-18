@@ -1,34 +1,71 @@
-# Importing the libraries
+# %% [markdown]
+# # Day 3：多元线性回归
+#
+# 目标：组合数值支出与州类别预测利润，并解释独热编码的基准类别。50_Startups.csv 有 50 行；零支出是合法观测，本课不会把 0 当缺失值。前置：Day 1、2。
+#
+# 运行前请阅读[环境与运行说明](../docs/setup.md)。本课 `.py` 是教学源文件，配套 Markdown 和 Notebook 自动同步。图形保存到 `outputs/`，设置 `COURSE_SHOW_PLOTS=1` 可显示窗口。
+
+# %%
+from pathlib import Path
+import sys
+
+# 脚本从文件位置定位仓库；Notebook 从当前工作目录向上查找。
+base = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+for candidate in (base, *base.parents):
+    if (candidate / "Code" / "course_utils.py").is_file():
+        code_dir = str(candidate / "Code")
+        if code_dir not in sys.path:
+            sys.path.insert(0, code_dir)
+        break
+else:
+    raise FileNotFoundError("找不到课程仓库，请从仓库根目录或 Code 目录启动 Notebook。")
+from course_utils import DATA, OUTPUT, finish_plot
+
+
+# %% [markdown]
+# ## 划分后构造预处理流程
+#
+# 模型为利润预测=截距+各数值支出×对应系数+州类别项。完整独热编码加截距会使列线性相关，系数可能不唯一，但最小二乘仍可能给出相同预测；删除一列不是自动提高精度的方法。这里用 `drop="first"` 指定基准类别。未知类别编码为零时与基准类别无法区分，需要结合业务理解。
+
+# %%
 import pandas as pd
-import numpy as np
-
-# Importing the dataset
-dataset = pd.read_csv('../datasets/50_Startups.csv')
-X = dataset.iloc[ : , :-1].values
-Y = dataset.iloc[ : ,  4 ].values
-
-# Encoding Categorical data
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-labelencoder = LabelEncoder()
-X[: , 3] = labelencoder.fit_transform(X[ : , 3])
-onehotencoder = OneHotEncoder(categorical_features = [3])
-X = onehotencoder.fit_transform(X).toarray()
-
-# Avoiding Dummy Variable Trap
-X = X[: , 1:]
-
-# Splitting the dataset into the Training set and Test set
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 0)
-
-# Fitting Multiple Linear Regression to the Training set
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
-regressor = LinearRegression()
-regressor.fit(X_train, Y_train)
+from course_utils import regression_report
 
-# Predicting the Test set results
-y_pred = regressor.predict(X_test)
+data = pd.read_csv(DATA / "50_Startups.csv")
+X, y = data.drop(columns="Profit"), data["Profit"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+preprocess = ColumnTransformer([
+    ("state", OneHotEncoder(drop="first", handle_unknown="ignore", sparse_output=False), ["State"])
+], remainder="passthrough")
+model = Pipeline([("preprocess", preprocess), ("regression", LinearRegression())])
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+metrics = regression_report(y_test, y_pred)
+print(pd.Series(model.named_steps["regression"].coef_,
+                index=model.named_steps["preprocess"].get_feature_names_out()))
+print("Intercept:", model.named_steps["regression"].intercept_)
 
-# regression evaluation
-from sklearn.metrics import r2_score
-print(r2_score(Y_test, y_pred))
+# %% [markdown]
+# ## 查看残差
+#
+# 系数单位随特征变化，不能仅比较绝对系数认定哪个因素最重要，也不能作因果结论。残差围绕零分布是诊断线索，不证明所有回归假设成立。
+
+# %%
+fig, ax = plt.subplots()
+ax.scatter(y_pred, y_test - y_pred)
+ax.axhline(0, color="black")
+ax.set(xlabel="Predicted profit", ylabel="Residual")
+finish_plot("day03_residuals")
+
+# %% [markdown]
+# ## 练习与检查
+#
+# 1. 打印基准州类别和输出特征名，解释一个州的系数。
+# 2. 比较完整独热编码与删除一列的预测和系数；保持划分不变。
+# 3. 用训练内交叉验证比较 Ridge，测试集只用于最终报告。

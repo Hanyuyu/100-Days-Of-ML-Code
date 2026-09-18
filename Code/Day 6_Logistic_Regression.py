@@ -1,71 +1,72 @@
-# Importing the Libraries
-import numpy as np
-import matplotlib.pyplot as plt
+# %% [markdown]
+# # Day 6：逻辑回归
+#
+# 使用年龄和估计薪资预测是否购买（0/1）。User ID 不作为特征。分层拆分让两部分的类别比例接近；测试集只用于最终评估。precision 表示预测正类中真阳性的比例，recall 表示实际正类被找回的比例，F1 是两者的调和平均，2PR/(P+R)。分类报告分别将每一类视为正类；macro avg 不按类别大小加权，weighted avg 按真实样本数加权。
+#
+# 运行前请阅读[环境与运行说明](../docs/setup.md)。本课 `.py` 是教学源文件，配套 Markdown 和 Notebook 自动同步。图形保存到 `outputs/`，设置 `COURSE_SHOW_PLOTS=1` 可显示窗口。
+
+# %%
+from pathlib import Path
+import sys
+
+# 脚本从文件位置定位仓库；Notebook 从当前工作目录向上查找。
+base = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+for candidate in (base, *base.parents):
+    if (candidate / "Code" / "course_utils.py").is_file():
+        code_dir = str(candidate / "Code")
+        if code_dir not in sys.path:
+            sys.path.insert(0, code_dir)
+        break
+else:
+    raise FileNotFoundError("找不到课程仓库，请从仓库根目录或 Code 目录启动 Notebook。")
+from course_utils import DATA, OUTPUT, finish_plot
+
+
+# %% [markdown]
+# ## 数据与基线
+#
+# 先与始终预测训练集多数类的简单基线比较。所有类别指标必须结合样本数量解读。
+
+# %%
 import pandas as pd
-
-# Importing the dataset
-dataset = pd.read_csv('../datasets/Social_Network_Ads.csv')
-X = dataset.iloc[:, [2, 3]].values
-y = dataset.iloc[:, 4].values
-
-# Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
-
-# Feature Scaling
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-sc = StandardScaler()
-X_train = sc.fit_transform(X_train)
-X_test = sc.transform(X_test)
+from sklearn.dummy import DummyClassifier
+from sklearn.metrics import accuracy_score
+from course_utils import classification_summary, decision_plot
 
-# Fitting Logistic Regression to the Training set
+data = pd.read_csv(DATA / "Social_Network_Ads.csv")
+X = data[["Age", "EstimatedSalary"]]
+y = data["Purchased"]
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, stratify=y, random_state=0)
+baseline = DummyClassifier(strategy="most_frequent").fit(X_train, y_train)
+print("Majority baseline accuracy:", accuracy_score(y_test, baseline.predict(X_test)))
+
+# %% [markdown]
+# ## 训练模型
+#
+# 标准化和分类器放在 Pipeline 内，保证交叉验证和预测都使用训练参数。sigmoid 将线性得分变为概率，默认分类通常用 0.5 阈值；逻辑回归是分类算法。
+
+# %%
 from sklearn.linear_model import LogisticRegression
-classifier = LogisticRegression()
-classifier.fit(X_train, y_train)
+model = Pipeline([("scale", StandardScaler()), ("classifier", LogisticRegression(max_iter=1000))])
+model.fit(X_train, y_train)
 
-# Predicting the Test set results
-y_pred = classifier.predict(X_test)
+# %% [markdown]
+# ## 测试评估与决策边界
+#
+# 混淆矩阵行是真实类别，列是预测类别。绘图工具在原始单位网格上调用整个模型，年龄/薪资坐标未标准化；它仅支持本课两个输入特征。
 
-# Making the Confusion Matrix
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
-cm = confusion_matrix(y_test, y_pred)
-print(cm)  # print confusion_matrix
-print(classification_report(y_test, y_pred))   # print classification report
+# %%
+y_pred = classification_summary(model, X_test, y_test, "day06")
+decision_plot(model, X_test, y_test, "day06_test", ["Age (years)", "Estimated salary"])
+probabilities = model.predict_proba(X_test)[:, 1]
+print("First five probabilities:", probabilities[:5])
+print("Predictions at threshold 0.7:", (probabilities[:5] >= 0.7).astype(int))
 
-#Visualization
-from matplotlib.colors import ListedColormap
-X_set,y_set=X_train,y_train
-X1,X2=np. meshgrid(np. arange(start=X_set[:,0].min()-1, stop=X_set[:, 0].max()+1, step=0.01),
-                   np. arange(start=X_set[:,1].min()-1, stop=X_set[:,1].max()+1, step=0.01))
-plt.contourf(X1, X2, classifier.predict(np.array([X1.ravel(),X2.ravel()]).T).reshape(X1.shape),
-             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
-plt.xlim(X1.min(),X1.max())
-plt.ylim(X2.min(),X2.max())
-for i,j in enumerate(np. unique(y_set)):
-    plt.scatter(X_set[y_set==j,0],X_set[y_set==j,1],
-                c = ListedColormap(('red', 'green'))(i), label=j)
-
-plt. title(' LOGISTIC(Training set)')
-plt. xlabel(' Age')
-plt. ylabel(' Estimated Salary')
-plt. legend()
-plt. show()
-
-X_set,y_set=X_test,y_test
-X1,X2=np. meshgrid(np. arange(start=X_set[:,0].min()-1, stop=X_set[:, 0].max()+1, step=0.01),
-                   np. arange(start=X_set[:,1].min()-1, stop=X_set[:,1].max()+1, step=0.01))
-
-plt.contourf(X1, X2, classifier.predict(np.array([X1.ravel(),X2.ravel()]).T).reshape(X1.shape),
-             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
-plt.xlim(X1.min(),X1.max())
-plt.ylim(X2.min(),X2.max())
-for i,j in enumerate(np. unique(y_set)):
-    plt.scatter(X_set[y_set==j,0],X_set[y_set==j,1],
-                c = ListedColormap(('red', 'green'))(i), label=j)
-
-plt. title(' LOGISTIC(Test set)')
-plt. xlabel(' Age')
-plt. ylabel(' Estimated Salary')
-plt. legend()
-plt. show()
+# %% [markdown]
+# ## 练习与检查
+#
+# 保持测试集不变，用验证集研究阈值如何影响 precision/recall。阈值选择不应看测试答案。
