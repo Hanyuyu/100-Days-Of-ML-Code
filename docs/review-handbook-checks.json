@@ -1,0 +1,238 @@
+{
+  "checked_on": "2026-09-18",
+  "results": [
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.00-Introduction-to-NumPy.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.01-Understanding-Data-Types.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.02-The-Basics-Of-NumPy-Arrays.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.03-Computation-on-arrays-ufuncs.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.04-Computation-on-arrays-aggregates.ipynb",
+      "hits": [
+        {
+          "cell": 39,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.05-Computation-on-arrays-broadcasting.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.06-Boolean-Arrays-and-Masks.ipynb",
+      "hits": [
+        {
+          "cell": 6,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.07-Fancy-Indexing.ipynb",
+      "hits": [
+        {
+          "cell": 32,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.08-Sorting.ipynb",
+      "hits": [
+        {
+          "cell": 31,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.09-Structured-Data-NumPy.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.00-Introduction-to-Pandas.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.01-Introducing-Pandas-Objects.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.02-Data-Indexing-and-Selection.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.03-Operations-in-Pandas.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.04-Missing-Values.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.05-Hierarchical-Indexing.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.06-Concat-And-Append.ipynb",
+      "hits": [
+        {
+          "cell": 38,
+          "line": "display('df1', 'df2', 'df1.append(df2)')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.07-Merge-and-Join.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.08-Aggregation-and-Grouping.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.09-Pivot-Tables.ipynb",
+      "hits": [
+        {
+          "cell": 34,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.10-Working-With-Strings.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.11-Working-with-Time-Series.ipynb",
+      "hits": [
+        {
+          "cell": 69,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        },
+        {
+          "cell": 71,
+          "line": "sp500.resample('BA').mean().plot(style=':')"
+        },
+        {
+          "cell": 95,
+          "line": "weekly = data.resample('W').sum()"
+        },
+        {
+          "cell": 97,
+          "line": "daily = data.resample('D').sum()"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.12-Performance-Eval-and-Query.ipynb",
+      "hits": []
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.00-Introduction-To-Matplotlib.ipynb",
+      "hits": [
+        {
+          "cell": 8,
+          "line": "plt.style.use('classic')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.01-Simple-Line-Plots.ipynb",
+      "hits": [
+        {
+          "cell": 3,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.02-Simple-Scatter-Plots.ipynb",
+      "hits": [
+        {
+          "cell": 3,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.03-Errorbars.ipynb",
+      "hits": [
+        {
+          "cell": 4,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.04-Density-and-Contour-Plots.ipynb",
+      "hits": [
+        {
+          "cell": 3,
+          "line": "plt.style.use('seaborn-white')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.05-Histograms-and-Binnings.ipynb",
+      "hits": [
+        {
+          "cell": 3,
+          "line": "plt.style.use('seaborn-white')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.06-Customizing-Legends.ipynb",
+      "hits": [
+        {
+          "cell": 3,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.07-Customizing-Colorbars.ipynb",
+      "hits": [
+        {
+          "cell": 3,
+          "line": "plt.style.use('seaborn-white')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.08-Multiple-Subplots.ipynb",
+      "hits": [
+        {
+          "cell": 3,
+          "line": "plt.style.use('seaborn-white')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.09-Text-and-Annotation.ipynb",
+      "hits": [
+        {
+          "cell": 3,
+          "line": "plt.style.use('seaborn-whitegrid')"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.12-Three-Dimensional-Plotting.ipynb",
+      "hits": []
+    }
+  ]
+}

@@ -1,0 +1,473 @@
+{
+  "checked_on": "2026-09-18",
+  "results": [
+    {
+      "url": "http://H-PC:6006",
+      "error": "ConnectionError"
+    },
+    {
+      "url": "http://shabal.in/visuals/kmeans/6.html",
+      "status": 200,
+      "final_url": "http://shabal.in/visuals/kmeans/6.html"
+    },
+    {
+      "url": "http://www.avikjain.me/",
+      "status": 200,
+      "final_url": "https://avikjain.me/"
+    },
+    {
+      "url": "http://www.cnblogs.com/shinny/p/9283372.html",
+      "status": 200,
+      "final_url": "https://www.cnblogs.com/shinny/p/9283372.html"
+    },
+    {
+      "url": "https://bloomberg.github.io/foml/#home",
+      "status": 200,
+      "final_url": "https://bloomberg.github.io/foml/#home"
+    },
+    {
+      "url": "https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_3367a.zip",
+      "error": "SSLError"
+    },
+    {
+      "url": "https://github.com/AnnaXJGe/100-Days-Of-ML-Code/blob/master/Info-graphs/random_forest_classification_test_set.png",
+      "status": 404,
+      "final_url": "https://github.com/AnnaXJGe/100-Days-Of-ML-Code/blob/master/Info-graphs/random_forest_classification_test_set.png"
+    },
+    {
+      "url": "https://github.com/AnnaXJGe/100-Days-Of-ML-Code/blob/master/Info-graphs/random_forest_classification_training_set.png",
+      "status": 404,
+      "final_url": "https://github.com/AnnaXJGe/100-Days-Of-ML-Code/blob/master/Info-graphs/random_forest_classification_training_set.png"
+    },
+    {
+      "url": "https://github.com/Avik-Jain/100-Days-Of-ML-Code",
+      "status": 200,
+      "final_url": "https://github.com/Avik-Jain/100-Days-Of-ML-Code"
+    },
+    {
+      "url": "https://github.com/Avik-Jain/100-Days-Of-ML-Code/blob/master/Other%20Docs/data.PNG",
+      "status": 200,
+      "final_url": "https://github.com/Avik-Jain/100-Days-Of-ML-Code/blob/master/Other%20Docs/data.PNG"
+    },
+    {
+      "url": "https://github.com/Avik-Jain/100-Days-Of-ML-Code/blob/master/datasets/Data.csv",
+      "status": 200,
+      "final_url": "https://github.com/Avik-Jain/100-Days-Of-ML-Code/blob/master/datasets/Data.csv"
+    },
+    {
+      "url": "https://github.com/Avik-Jain/100-Days-Of-ML-Code/blob/master/datasets/Social_Network_Ads.csv",
+      "status": 200,
+      "final_url": "https://github.com/Avik-Jain/100-Days-Of-ML-Code/blob/master/datasets/Social_Network_Ads.csv"
+    },
+    {
+      "url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%201_Data_Preprocessing.py",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%201_Data_Preprocessing.py"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2011_K-NN.md",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2011_K-NN.md"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2013_SVM.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2013_SVM.ipynb"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2013_SVM.md",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2013_SVM.md"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2013_SVM.py",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2013_SVM.py"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%201_Data_Preprocessing.md",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%201_Data_Preprocessing.md"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2025_Decision_Tree.md",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2025_Decision_Tree.md"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%202_Simple_Linear_Regression.md",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%202_Simple_Linear_Regression.md"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2034_Random_Forests.md",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2034_Random_Forests.md"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2039.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2039.ipynb"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%203_Multiple_Linear_Regression.md",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%203_Multiple_Linear_Regression.md"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2040.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2040.ipynb"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2041.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2041.ipynb"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%2042.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%2042.ipynb"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Code/Day%206_Logistic_Regression.md",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Code/Day%206_Logistic_Regression.md"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%201.jpg",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%201.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2012.jpg",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2012.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%202.jpg",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%202.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2023%20-%20Chinese.jpg",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2023%20-%20Chinese.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%203.png",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%203.png"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2033.png",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2033.png"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%204.jpg",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%204.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%204.jpg?raw=true",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/MLEveryday/100-Days-Of-ML-Code/refs/heads/master/Info-graphs/Day%204.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2043.jpg",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2043.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2054.jpg",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%2054.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%207.jpg",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Info-graphs/Day%207.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Other%20Docs/%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB.gif",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Other%20Docs/%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB.gif"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Other%20Docs/LR_test.png?raw=true",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/MLEveryday/100-Days-Of-ML-Code/refs/heads/master/Other%20Docs/LR_test.png"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Other%20Docs/LR_training.png?raw=true",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/MLEveryday/100-Days-Of-ML-Code/refs/heads/master/Other%20Docs/LR_training.png"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Other%20Docs/Python%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E6%89%8B%E5%86%8C.zip",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Other%20Docs/Python%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E6%89%8B%E5%86%8C.zip"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Other%20Docs/SVM_test%20set.png",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Other%20Docs/SVM_test%20set.png"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Other%20Docs/SVM_training%20set.png",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/blob/master/Other%20Docs/SVM_training%20set.png"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Other%20Docs/data.png?raw=true",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/MLEveryday/100-Days-Of-ML-Code/refs/heads/master/Other%20Docs/data.png"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/raw/master/Info-graphs/Day%2023%20-%20Chinese.jpg",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/MLEveryday/100-Days-Of-ML-Code/master/Info-graphs/Day%2023%20-%20Chinese.jpg"
+    },
+    {
+      "url": "https://github.com/MachineLearning100/100-Days-Of-ML-Code/tree/master/datasets",
+      "status": 200,
+      "final_url": "https://github.com/MLEveryday/100-Days-Of-ML-Code/tree/master/datasets"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.00-Introduction-to-NumPy.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.00-Introduction-to-NumPy.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.01-Understanding-Data-Types.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.01-Understanding-Data-Types.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.02-The-Basics-Of-NumPy-Arrays.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.02-The-Basics-Of-NumPy-Arrays.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.03-Computation-on-arrays-ufuncs.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.03-Computation-on-arrays-ufuncs.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.04-Computation-on-arrays-aggregates.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.04-Computation-on-arrays-aggregates.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.05-Computation-on-arrays-broadcasting.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.05-Computation-on-arrays-broadcasting.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.06-Boolean-Arrays-and-Masks.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.06-Boolean-Arrays-and-Masks.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.07-Fancy-Indexing.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.07-Fancy-Indexing.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.08-Sorting.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.08-Sorting.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.09-",
+      "status": 404,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/02.09-"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.00-Introduction-to-Pandas.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.00-Introduction-to-Pandas.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.01-Introducing-Pandas-Objects.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.01-Introducing-Pandas-Objects.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.02-Data-Indexing-and-Selection.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.02-Data-Indexing-and-Selection.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.03-Operations-in-Pandas.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.03-Operations-in-Pandas.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.04-Missing-Values.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.04-Missing-Values.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.05-Hierarchical-Indexing.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.05-Hierarchical-Indexing.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.06-Concat-And-Append.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.06-Concat-And-Append.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.07-Merge-and-Join.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.07-Merge-and-Join.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.08-Aggregation-and-Grouping.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.08-Aggregation-and-Grouping.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.09-Pivot-Tables.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.09-Pivot-Tables.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.10-Working-With-Strings.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.10-Working-With-Strings.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.11-Working-with-Time-Series.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.11-Working-with-Time-Series.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.12-Performance-Eval-and-Query.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/03.12-Performance-Eval-and-Query.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.00-Introduction-To-Matplotlib.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.00-Introduction-To-Matplotlib.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.01-Simple-Line-Plots.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.01-Simple-Line-Plots.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.02-Simple-Scatter-Plots.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.02-Simple-Scatter-Plots.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.03-Errorbars.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.03-Errorbars.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.04-Density-and-Contour-Plots.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.04-Density-and-Contour-Plots.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.05-Histograms-and-Binnings.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.05-Histograms-and-Binnings.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.06-Customizing-Legends.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.06-Customizing-Legends.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.07-Customizing-Colorbars.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.07-Customizing-Colorbars.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.08-Multiple-Subplots.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.08-Multiple-Subplots.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.09-Text-and-Annotation.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.09-Text-and-Annotation.ipynb"
+    },
+    {
+      "url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.12-Three-Dimensional-Plotting.ipynb",
+      "status": 200,
+      "final_url": "https://github.com/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/04.12-Three-Dimensional-Plotting.ipynb"
+    },
+    {
+      "url": "https://pythonprogramming.net/convolutional-neural-network-deep-learning-python-tensorflow-keras/",
+      "status": 200,
+      "final_url": "https://pythonprogramming.net/convolutional-neural-network-deep-learning-python-tensorflow-keras/"
+    },
+    {
+      "url": "https://pythonprogramming.net/static/images/machine-learning/second-model-tensorboard.png",
+      "status": 200,
+      "final_url": "https://pythonprogramming.net/static/images/machine-learning/second-model-tensorboard.png"
+    },
+    {
+      "url": "https://pythonprogramming.net/static/images/machine-learning/tensorboard-basic.png",
+      "status": 200,
+      "final_url": "https://pythonprogramming.net/static/images/machine-learning/tensorboard-basic.png"
+    },
+    {
+      "url": "https://space.bilibili.com/88461692/#/channel/detail?cid=13407",
+      "status": 412,
+      "final_url": "https://space.bilibili.com/88461692/#/channel/detail?cid=13407"
+    },
+    {
+      "url": "https://space.bilibili.com/88461692/#/channel/detail?cid=26587",
+      "status": 412,
+      "final_url": "https://space.bilibili.com/88461692/#/channel/detail?cid=26587"
+    },
+    {
+      "url": "https://space.bilibili.com/88461692/#/channel/detail?cid=9450",
+      "status": 412,
+      "final_url": "https://space.bilibili.com/88461692/#/channel/detail?cid=9450"
+    },
+    {
+      "url": "https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz",
+      "status": 200,
+      "final_url": "https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz"
+    },
+    {
+      "url": "https://towardsdatascience.com/logistic-regression-detailed-overview-46c4da4303bc",
+      "status": 200,
+      "final_url": "https://towardsdatascience.com/a-gentle-introduction-to-complementary-log-log-regression-8ac3c5c1cd83/"
+    },
+    {
+      "url": "https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw",
+      "status": 200,
+      "final_url": "https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=wQ8BIBpya2k&t=19s&index=2&list=PLQVvvaa0QuDfhTox0AjmQ6tvTgMBZBEXN",
+      "status": 200,
+      "final_url": "https://www.youtube.com/watch?v=wQ8BIBpya2k&t=19s&index=2&list=PLQVvvaa0QuDfhTox0AjmQ6tvTgMBZBEXN"
+    },
+    {
+      "url": "https://zhuanlan.zhihu.com/p/33358809",
+      "status": 403,
+      "final_url": "https://zhuanlan.zhihu.com/p/33358809"
+    }
+  ]
+}

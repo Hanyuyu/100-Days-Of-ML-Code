@@ -1,39 +1,33 @@
+# 常见问题
 
-# 常见问题解答
-欢迎到Issues提问
- 
-### 1. “拆分数据”和“特征缩放”的顺序
-可以先“拆分数据”，再“特征缩放”，但需要使用训练集的fit参数，去transform测试集，以保证参数相同。
+## 应先划分数据，还是先预处理？
 
-详见[issue#41](https://github.com/MachineLearning100/100-Days-Of-ML-Code/issues/41)。
+先划分。填补均值、标准化参数、类别集合等都只能从训练集学习，测试集只调用 `transform`。交叉验证时用 Pipeline 让每一折的预处理也只学习该折训练数据。见 [Day 1](Code/Day%201_Data_Preprocessing.md)。
 
-### 2. 3Blue1Brown视频
-原作中提到的YouTube视频，在B站有[官方中文版](https://space.bilibili.com/88461692/#/)，README的链接也是到B站。
- 
-感谢网友在[issue#45](https://github.com/MachineLearning100/100-Days-Of-ML-Code/issues/45)的反馈。
+## 应安装哪个版本？
 
-### 3. Deep Learning basics with Python, TensorFlow and Keras
-[文字版](https://pythonprogramming.net/introduction-deep-learning-python-tensorflow-keras/)的中文版见第39天到第42天。
+按[环境说明](docs/setup.md)在新虚拟环境安装版本文件。支持的教学基线为 Python 3.11/3.12；不再兼容 Python 2 或 sklearn 0.19。课程使用 `model_selection`、`SimpleImputer`、`ColumnTransformer` 和现代 `OneHotEncoder`，无需寻找旧包绕过错误。
 
-详见[issue#52](https://github.com/MachineLearning100/100-Days-Of-ML-Code/issues/52)。
+## 为什么运行结果和历史截图不同？
 
-### 4.《Python数据科学手册》
-**[高清中文版pdf](https://github.com/MachineLearning100/100-Days-Of-ML-Code/blob/master/Other%20Docs/Python%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E6%89%8B%E5%86%8C.zip)**，[Jupyter notebooks](https://github.com/jakevdp/PythonDataScienceHandbook)。
-<br>仅作为个人学习，不能用于商业用途。
+数据范围、划分、随机种子、默认参数和依赖版本都会影响结果。现在的课程统一了脚本与 Notebook 的代码，旧截图不作为当前结果基准。比较实验应保持数据划分和评价方式不变。
 
-### 5. 微信群
-见[issue#59](https://github.com/MachineLearning100/100-Days-Of-ML-Code/issues/59)
+## 为什么图没有弹出？
 
-### 6. 常用工具推荐
-见[issue#60](https://github.com/MLEveryday/100-Days-Of-ML-Code/issues/60)
+默认保存到 `outputs/` 并打印路径，适用于 Notebook、终端与无显示器服务器。要显示桌面窗口可设置 `COURSE_SHOW_PLOTS=1`；Notebook 可在文件浏览器打开输出 PNG。
 
-### 7. sklearn版本
-sklearn工具包0.19和0.20版本，cross_validation在0.20版本是将被移除的并转移到model_selection包下。要排除这些问题，注意平时运行时的出现warning即可。
+## 为什么找不到数据或共享模块？
 
-见[issue63](https://github.com/MLEveryday/100-Days-Of-ML-Code/issues/63)。
+请保留完整仓库，从根目录或 Code 目录打开 Notebook。猫狗数据需自行准备，并先运行 Day 40；不要把 Notebook 单独复制到另一个目录。见[数据说明](datasets/readme.md)。
 
-### 8. Python版本
-建议使用Python3。使用Python2.7运行示例代码时可能有问题，例如：线性回归如下代码中“1/4”，在Python2.7中1/4=0，可以改成“1.0/4”或者“0.25”。
-```python
-X_train, X_test, Y_train, Y_test = train_test_split( X, Y, test_size = 1/4, random_state = 0) 
-```
+## 缺少 X.pickle 或旧模型无法加载？
+
+现代课程不再使用 pickle 图像数组。Day 40 输出 JSON 清单，后续按批次读取图像。Keras 3 的完整模型保存为 `.keras`；旧 SavedModel 与新格式的加载规则不同，参见 [Day 39](Code/Day%2039.md)。
+
+## 怎样修改课程？
+
+实现课编辑带单元标记的 `.py`，再执行 `python tools/sync_lessons.py` 同步 md 与 Notebook。理论课编辑 docs/lessons 中的 Markdown。提交前按[运行说明](docs/setup.md)检查，避免只改三份材料中的一份。
+
+## 理论视频和外部书籍是否必需？
+
+每个学习日均有本地目标、摘要和练习。视频、旧书及速查表作为延伸阅读，其 API 不保证与当前环境一致。新代码以本仓库版本和官方文档为准；参考 [现代工具阅读说明](docs/readings.md)。
